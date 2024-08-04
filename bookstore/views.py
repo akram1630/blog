@@ -7,5 +7,9 @@ def y(request):
 def z(request):
     return HttpResponse('zzzzzzzzzzzzzzzzz')
 
-def home(request):
+def home(request): 
     return render(request=request , template_name='bookstore/dashboard.html')
+def books(request):
+    return render(request=request , template_name='bookstore/books.html')
+def customer(request):
+    return render(request=request , template_name='bookstore/customer.html')
