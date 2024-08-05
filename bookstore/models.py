@@ -19,11 +19,14 @@ class Customer(models.Model):
 
 
 
-# class Tag(models.Model):
-#     name = models.CharField(max_length=190, null=True)
+class Tag(models.Model):
+    #we use tags in many to many cuz
+    #   |--------many-------To---------------------many|
+    #   |(php,django,css...)to(delivered,in order ....)| 
+    name = models.CharField(max_length=190, null=True)
 
-#     def __str__(self):
-#        return self.name
+    def __str__(self):
+       return self.name
 
 class Book(models.Model):
     CATEGORY = ( #tuple
@@ -37,7 +40,7 @@ class Book(models.Model):
     price = models.FloatField( null=True)
     category = models.CharField(max_length=190, null=True ,choices=CATEGORY  ) 
     description = models.CharField(max_length=200, null=True)
-   # tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
 
     def __str__(self):
@@ -54,6 +57,6 @@ class Order(models.Model):
     # Order model will be set to NULL, instead of deleting the Order.
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
     book = models.ForeignKey(Book, null=True, on_delete=models.SET_NULL)
-    #tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(Tag)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     status =  models.CharField(max_length=200, null=True,choices=STATUS)

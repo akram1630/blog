@@ -1,5 +1,129 @@
 {% extends 'bookstore/main.html'%}
 
 {% block content %}
-<h1>dashboard</h1>
+
+<h1 class="p-5">Dashboard</h1>
+ 
+
+<div class="container pb-5">
+  <div class="row">
+    <div class="col-sm">
+      Total Orders : <span class="badge badge-pill badge-primary">{{total_orders}}</span>
+    </div>
+    <div class="col-sm">
+    Pending : <span class="badge badge-pill badge-danger">{{total_p_orders}}</span>
+    </div>
+    <div class="col-sm">
+     Delivered : <span class="badge badge-pill badge-success">{{total_d_orders}}</span>
+    </div>
+    <div class="col-sm">
+     In Progress :<span class="badge badge-pill badge-warning"> {{total_in_orders}}</span>
+    </div>
+    <div class="col-sm">
+      Out of Order : <span class="badge badge-pill badge-secondary">{{total_out_orders}}</span>
+    </div>
+  </div>
+</div>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col">
+     <div class="card"  >
+  <div class="card-body">
+    <h5 class="card-title">Customers  </h5>
+    <h6 class="card-subtitle mb-2 text-muted"><a class="btn btn-success"  href="#">create</a></h6>
+<table class="table ">
+  <thead>
+    <tr> 
+      <th scope="col">name</th>
+      <th scope="col">email</th>
+      <th scope="col">age</th>
+      <th scope="col">Show</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+      {% for item in customers  %}
+        <tr>
+      <td>{{item.name}}</td>
+      <td>{{item.email}}</td>
+      <td>{{item.age}}</td>
+      
+       <td>  <a href="{% comment %}{% url 'customer' item.id %}{% endcomment %}"> <i class="fas fa-eye"></i> </a>    </td>
+       
+       </tr>  
+      {% endfor %}
+   
+  </tbody>
+</table>
+  </div>
+</div>
+    </div>
+    <div class="col">
+     <div class="card"  >
+  <div class="card-body">
+    <h5 class="card-title">Orders</h5>
+       <h6 class="card-subtitle mb-2 text-muted"><a class="btn btn-success" href="{% comment %}{% url 'create' %}{% endcomment %}">create</a></h6> 
+<table class="table ">
+  <thead>
+    <tr> 
+     <th scope="col">Date</th>
+      <th scope="col">customer</th>
+      <th scope="col">book</th>
+      <th scope="col">status</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+  
+      {% for item in orders  %}
+        <tr>
+         <td>{{item.date_created}}</td>
+      <td>{{item.customer}}-{{item.customer.age}}</td>
+      <td>{{item.book}}</td>
+      <td>{{item.status}}</td>
+       <td>
+    
+       <a href="{% comment %}{% url 'update' item.id%}{% endcomment %}"><i class="fas fa-edit"></i></a>
+       <a class="text-danger" href="{% comment %}{% url 'delete' item.id %}{% endcomment %}"><i class="fas fa-trash-alt"></i></a>
+    
+       </td>
+       </tr>  
+      {% endfor %}
+   
+  </tbody>
+</table>
+  </div>
+</div>
+    </div>
+  </div>
+{% comment %}  
+  <div class="row pt-5">
+    <div class="col">
+     <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>
+    </div>
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">Card title</h5>
+    <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <a href="#" class="card-link">Card link</a>
+    <a href="#" class="card-link">Another link</a>
+  </div>
+</div>
+    </div>
+    
+  </div>
+</div>
+{% endcomment %}
 {% endblock %}
