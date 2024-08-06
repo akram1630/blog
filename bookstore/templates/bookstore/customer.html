@@ -51,7 +51,7 @@
     Phone :   {{customer.phone}}
     </div>
       <div class="col-sm">
-    Number of Orders :   {{number_orders}}
+    Number of Orders :   {{total_orders}}
     </div>
   </div>
 </div>
@@ -72,7 +72,7 @@
    {% for item in orders  %}
         <tr>
          <td>{{item.book}}</td>
-      <td>{{item.book.category}}</td>
+      <td>{{item.book.category}}</td> {% comment %}//from foreign key{% endcomment %}
       <td>{{item.date_created}}</td>
       <td>{{item.status}}</td>
        <td>

@@ -1,6 +1,7 @@
 from django.http import HttpResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from .models import *
+from .forms import OrderForm,CreateNewUser,CustomerForm
 # Create your views here.
 def y(request):
     return HttpResponse('yyyyyyyyyyyyyyyy')
@@ -36,7 +37,7 @@ def books(request):
 def customer(request,pk):
     customer = Customer.objects.get(id=pk)
     orders = customer.order_set.all()
-    #number_orders = orders.count()
+    total_orders = orders.count()
 
     #searchFilter = OrderFilter(request.GET , queryset=orders)
     #orders = searchFilter.qs
@@ -44,6 +45,19 @@ def customer(request,pk):
         'customer': customer ,
         #'myFilter': searchFilter ,
         'orders': orders,
-        #'number_orders': number_orders
+        'total_orders': total_orders
     }
     return render(request=request , template_name='bookstore/customer.html',context=myContext)
+
+def create(request): 
+    form = OrderForm()
+    if request.method == 'POST':
+       print(request.POST) # :<QueryDict: {'csrfmiddlewaretoken': ['t1tXOUX9aBJUdJ6ezJJUWdMWBC5L1qTIQrHzP0mycZ8WTeivSWIEURfweAEUdqje'], 'customer': ['2'], 'book': ['2'], 'tags': ['2'], 'status': ['in progress']}>
+       form = OrderForm(request.POST) #the new object
+       if form.is_valid():
+           form.save()
+           return redirect('/')
+           #return redirect('/books')
+    context = {'form':form}
+
+    return render(request , 'bookstore/my_order_form.html', context )

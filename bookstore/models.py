@@ -52,7 +52,7 @@ class Order(models.Model):
         ('Delivered','Delivered'),
         ('in progress','in progress'),
         ('out of order','out of order')
-    )
+    )  
     # if the associated Customer is deleted, the customer field in the 
     # Order model will be set to NULL, instead of deleting the Order.
     customer = models.ForeignKey(Customer, null=True, on_delete=models.SET_NULL)
