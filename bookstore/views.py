@@ -3,6 +3,7 @@ from django.shortcuts import redirect, render
 from .models import *
 from .forms import OrderForm,CreateNewUser,CustomerForm
 from django.forms import inlineformset_factory
+from .filters import OrderFilter
 # Create your views here.
 def y(request):
     return HttpResponse('yyyyyyyyyyyyyyyy')
@@ -35,20 +36,22 @@ def books(request):
     return render(request=request , template_name='bookstore/books.html',context={'books': books })
 ################################################################################################""
 
-def customer(request,pk):
-    customer = Customer.objects.get(id=pk)  
-    orders = customer.order_set.all()
-    total_orders = orders.count()
+# def customer(request,pk):
+#     customer = Customer.objects.get(id=pk)  
+#     orders = customer.order_set.all()
+#     total_orders = orders.count()
 
-    #searchFilter = OrderFilter(request.GET , queryset=orders)
-    #orders = searchFilter.qs
-    myContext = {
-        'customer': customer ,
-        #'myFilter': searchFilter ,
-        'orders': orders,
-        'total_orders': total_orders
-    }
-    return render(request=request , template_name='bookstore/customer.html',context=myContext)
+#     #searchFilter = OrderFilter(request.GET , queryset=orders)
+#     #orders = searchFilter.qs
+#     myContext = {
+#         'customer': customer ,
+#         #'myFilter': searchFilter ,
+#         'orders': orders,
+#         'total_orders': total_orders
+#     }
+#     return render(request=request , template_name='bookstore/customer.html',context=myContext)
+
+
 
 # def create(request): 
 #     form = OrderForm()
@@ -62,6 +65,23 @@ def customer(request,pk):
 #     context = {'form':form}
 
 #     return render(request=request , template_name='bookstore/my_order_form.html', context=context )
+################################################################  
+#with filtering
+def customer(request,pk):
+    customer = Customer.objects.get(id=pk)  
+    orders = customer.order_set.all()
+    total_orders = orders.count()
+    searchFilter = OrderFilter(request.GET , queryset=orders)
+    orders = searchFilter.qs #override all order to qs : queryset
+    myContext = {
+        'customer': customer ,
+        'orders': orders,
+        'total_orders': total_orders,   
+        'myFilter' : searchFilter
+    }
+    return render(request=request , template_name='bookstore/customer.html',context=myContext)
+
+
 
 #create many orders in one time
 def create(request,pk): #pk of customer 

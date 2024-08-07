@@ -9,7 +9,8 @@ class OrderForm(ModelForm):
     class Meta:
         model = Order  
         fields ="__all__"
-
+        #fields = ['book' , 'status']
+        exclude = ['book' , 'status']
 
 class CustomerForm(ModelForm):
     class Meta:
