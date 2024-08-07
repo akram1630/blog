@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-sxk(^f0hx*dt4(qtejpt5*avt4a+dal7b#ikfo&)9zyrp-m@3+
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['akram.com']
 
 
 # Application definition
@@ -35,9 +35,12 @@ INSTALLED_APPS = [
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.messages',
+    'django.contrib.messages',  
     'django.contrib.staticfiles',
     'bookstore',
+    'django_extensions', #generate uml
+    'graphviz',
+    'pylint',
 ]
 
 MIDDLEWARE = [

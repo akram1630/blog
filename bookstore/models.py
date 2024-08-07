@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 # makemigrations : to create a file understandable to sql
 # migrate : to send the file to database sql
-
+# django generates auto an id attribute for each model class 
 
 class Customer(models.Model):
     user = models.OneToOneField(User,null=True, on_delete=models.CASCADE)

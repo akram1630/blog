@@ -6,10 +6,12 @@ urlpatterns = [
     ######################################################
     path('',views.home,name='home'),#name= it takes u to this url when click
     path('books/',views.books,name="books"),
-    #path('customer/',views.customer,name='customer'),
+    #path('customer/',views.customer,name='customer'), 
     #int or str for primaryKey (id)
     path('customer/<int:pk>/',views.customer,name='customer'),
-    path('create/',views.create,name='create'),
+    path('create/<int:pk>/',views.create,name='create'),
+    path('update/<str:pk>/' ,views.update, name="update"),
+    path('delete/<str:pk>/' ,views.delete, name="delete"),
 
 
 
