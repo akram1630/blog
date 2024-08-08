@@ -4,14 +4,16 @@ from .models import *
 from .forms import OrderForm,CreateNewUser,CustomerForm
 from django.forms import inlineformset_factory
 from .filters import OrderFilter
+from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
 # Create your views here.
+####################################################################################  
 def y(request):
     return HttpResponse('yyyyyyyyyyyyyyyy')
-################################################################################################""
-
+################################################################################################
 def z(request):
     return HttpResponse('zzzzzzzzzzzzzzzzz')
-################################################################################################""
+################################################################################################
 def home(request):   
     customers = Customer.objects.all()
     orders = Order.objects.all()
@@ -30,12 +32,11 @@ def home(request):
                'total_out_orders': total_out_orders
                }
     return render(request=request , template_name='bookstore/dashboard.html',context=myContext)
-################################################################################################""
+################################################################################################
 def books(request): 
     books = Book.objects.all() # objects of class 
     return render(request=request , template_name='bookstore/books.html',context={'books': books })
-################################################################################################""
-
+################################################################################################
 # def customer(request,pk):
 #     customer = Customer.objects.get(id=pk)  
 #     orders = customer.order_set.all()
@@ -50,9 +51,7 @@ def books(request):
 #         'total_orders': total_orders
 #     }
 #     return render(request=request , template_name='bookstore/customer.html',context=myContext)
-
-
-
+################################################################################################
 # def create(request): 
 #     form = OrderForm()
 #     if request.method == 'POST':
@@ -63,10 +62,9 @@ def books(request):
 #            return redirect('/')
 #            #return redirect('/books')
 #     context = {'form':form}
-
 #     return render(request=request , template_name='bookstore/my_order_form.html', context=context )
-################################################################  
-#with filtering
+####################################################################################  
+#with filtering :
 def customer(request,pk):
     customer = Customer.objects.get(id=pk)  
     orders = customer.order_set.all()
@@ -80,10 +78,8 @@ def customer(request,pk):
         'myFilter' : searchFilter
     }
     return render(request=request , template_name='bookstore/customer.html',context=myContext)
-
-
-
-#create many orders in one time
+################################################################################################
+#create many orders of specific user in one time :
 def create(request,pk): #pk of customer 
     orderFormSet = inlineformset_factory(Customer,Order,fields=('book', 'status'),extra=8)
     customer = Customer.objects.get(id=pk)
@@ -97,9 +93,8 @@ def create(request,pk): #pk of customer
            return redirect('/')
            #return redirect('/books')
     context = {'formSet':formSet}
-
     return render(request=request , template_name='bookstore/my_order_form.html', context=context )
-
+################################################################################################
 def update(request,pk): 
     order = Order.objects.get(id=pk)
     form = OrderForm(instance=order) #to fill the form with ancient order
@@ -107,13 +102,10 @@ def update(request,pk):
        form = OrderForm(request.POST, instance=order) #to update the ancient order with new per user
        if form.is_valid():
            form.save()
-         
            return redirect('/')
-
     context = {'form':form}
-
     return render(request , 'bookstore/my_order_form.html', context )
-  
+################################################################################################
 def delete(request , pk):
     order = Order.objects.get(id=pk)  
     if request.method == "POST": #we used post http cuz it's protected by csrf-token
@@ -121,3 +113,51 @@ def delete(request , pk):
         return redirect('/')
     myContext = {"order" : order}    
     return render( request=request , template_name= 'bookstore/delete_form.html',context=myContext)    
+################################################################################################
+def login(request):  
+    # if request.user.is_authenticated:
+    #     return redirect('home')
+    # else:
+    context = {}
+    return render(request=request,template_name='bookstore/login.html',context=context )
+################################################################################################
+# def register(request):   
+#     #form = UserCreationForm(request.POST) #aint from forms.py
+#     form = CreateNewUser(request.POST) # i modified UserCreationForm to CreateNewUser in forms.py 
+#     if request.method == 'POST': 
+#         if form.is_valid():
+#             form.save()#store it in DataBase
+#             return redirect('/')
+#         else:
+#             print('not valid') 
+#     context = {'form':form}
+#     return render(request=request ,template_name= 'bookstore/register.html',context= context )
+################################################################################################                           
+def register(request):   
+    #form = UserCreationForm(request.POST) #aint from forms.py
+    form = CreateNewUser(request.POST) # i modified UserCreationForm to CreateNewUser in forms.py 
+    if request.method == 'POST': 
+        if form.is_valid():
+            form.save() 
+            username = form.cleaned_data.get('username')
+            #messages will be sent as a variable in href next page
+            messages.success(request , username + ' Created Successfully !')
+            return redirect('login')  
+    #     form = CreateNewUser(request.POST)
+    
+    #         recaptcha_response = request.POST.get('g-recaptcha-response')
+    #         data = {
+    #            'secret' : settings.GOOGLE_RECAPTCHA_SECRET_KEY,
+    #            'response' : recaptcha_response
+    #         }
+    #         r = requests.post('https://www.google.com/recaptcha/api/siteverify',data=data)
+    #         result = r.json()
+    #         if result['success']:
+    #             
+               
+    #             return redirect('login')  
+    #         else:
+    #             messages.error(request ,  ' invalid Recaptcha please try again!')  
+    context = {'form':form}
+    return render(request=request ,template_name= 'bookstore/register.html',context= context )
+                           

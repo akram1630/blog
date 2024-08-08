@@ -18,8 +18,8 @@ class CustomerForm(ModelForm):
         fields ="__all__"
         exclude = ['user'  ]
 
-
-class CreateNewUser(UserCreationForm):
+#to override the features of UserCreationForm :
+class CreateNewUser(UserCreationForm): 
     class Meta:
         model = User
         fields =['username','email','password1','password2']
