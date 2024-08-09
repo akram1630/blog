@@ -13,7 +13,8 @@ urlpatterns = [
     path('update/<str:pk>/' ,views.update, name="update"),
     path('delete/<str:pk>/' ,views.delete, name="delete"),
     path('register/' ,views.register, name="register"),
-    path('login/',views.login, name="login"),
+    path('login/',views.userLogin, name="login"), 
+    path('logout/' ,views.userLogout, name="logout"),
 
 
 

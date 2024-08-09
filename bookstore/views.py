@@ -6,6 +6,7 @@ from django.forms import inlineformset_factory
 from .filters import OrderFilter
 from django.contrib import messages
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate ,login  , logout 
 # Create your views here.
 ####################################################################################  
 def y(request):
@@ -114,12 +115,12 @@ def delete(request , pk):
     myContext = {"order" : order}    
     return render( request=request , template_name= 'bookstore/delete_form.html',context=myContext)    
 ################################################################################################
-def login(request):  
-    # if request.user.is_authenticated:
-    #     return redirect('home')
-    # else:
-    context = {}
-    return render(request=request,template_name='bookstore/login.html',context=context )
+# def login(request):  
+#     if request.user.is_authenticated:
+#         return redirect('home')
+#     else: 
+#         context = {}
+#     return render(request=request,template_name='bookstore/login.html',context=context )
 ################################################################################################
 # def register(request):   
 #     #form = UserCreationForm(request.POST) #aint from forms.py
@@ -144,7 +145,6 @@ def register(request):
             messages.success(request , username + ' Created Successfully !')
             return redirect('login')  
     #     form = CreateNewUser(request.POST)
-    
     #         recaptcha_response = request.POST.get('g-recaptcha-response')
     #         data = {
     #            'secret' : settings.GOOGLE_RECAPTCHA_SECRET_KEY,
@@ -160,4 +160,25 @@ def register(request):
     #             messages.error(request ,  ' invalid Recaptcha please try again!')  
     context = {'form':form}
     return render(request=request ,template_name= 'bookstore/register.html',context= context )
-                           
+################################################################################################                           
+#we can't name this def login()
+def userLogin(request):  
+    if request.method == 'POST': 
+        username = request.POST.get('username')  
+        password = request.POST.get('password')
+        print(username,'+++',password)
+        user = authenticate(request , username=username, password=password)
+        if user is not None: #None = not exist
+            login(request, user) 
+            return redirect('home')
+        else:
+            messages.info(request, 'Credentials error')
+    
+    context = {}
+
+    return render(request , 'bookstore/login.html', context )        
+################################################################################################                                                      
+def userLogout(request):  
+    logout(request) #function i imported
+    return redirect('login') 
+
