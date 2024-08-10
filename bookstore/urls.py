@@ -14,7 +14,9 @@ urlpatterns = [
     path('delete/<str:pk>/' ,views.delete, name="delete"),
     path('register/' ,views.register, name="register"),
     path('login/',views.userLogin, name="login"), 
-    path('logout/' ,views.userLogout, name="logout"),
+    path('logout/' ,views.userLogout, name="logout"),  
+    path('user/' ,views.userProfile, name="user_profile"),
+    #path('profile/' ,views.profileInfo, name="profile_info"),
 
 
 

@@ -60,3 +60,7 @@ class Order(models.Model):
     tags = models.ManyToManyField(Tag)
     date_created = models.DateTimeField(auto_now_add=True, null=True)
     status =  models.CharField(max_length=200, null=True,choices=STATUS)
+    def __str__(self):
+        date = str(self.date_created)[:19]
+        return f"{self.customer.name}-{self.book.name}-{date}"
+ 
